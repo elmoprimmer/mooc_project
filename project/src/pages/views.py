@@ -12,6 +12,10 @@ import string
 import pkg_resources
 pkg_resources.require("aadhaar-py==2.0.0") # Fix for Vulnerable and Outdated Components: remove this line and import version of aadhar with updated security
 from aadhaar.secure_qr import extract_data 
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.shortcuts import render, redirect
 
 
 
@@ -120,3 +124,20 @@ def homePageView(request):
 		extracted_data = No.objects.filter(id=1)[0]
 
 	return render(request, 'pages/index.html', {'uploads': uploads,'nickname':nickname[0],'msgs': messages, 'users': users,'qr': extracted_data})
+
+# @login_required
+# def change_password(request):
+#     if request.method == 'POST':
+#         form = PasswordChangeForm(request.user, request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             update_session_auth_hash(request, user)  # Important!
+#             messages.success(request, 'Your password was successfully updated!')
+#             return redirect('/')
+#         else:
+#             messages.error(request, 'Please correct the error below.')
+#     else:
+#         form = PasswordChangeForm(request.user)
+#     return render(request, 'pages/change_password.html', {
+#         'form': form
+#     })
